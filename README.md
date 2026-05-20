@@ -11,6 +11,14 @@ streamlit run app.py
 
 The app opens at `http://localhost:8501`.
 
+Run this command in vs code terminal before running the webapp
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+You'll know it worked when your terminal prompt is prefixed with (.venv).
+
 ## Project Structure
 
 ```
@@ -39,3 +47,14 @@ Research lives in `content/*.md`. Edit the markdown directly; the Research page 
 - **App shell / views / content** — owner: Person B
 - **EDA analytics, modelling, metrics in `core/`** — owner: Person A
 - **Reusable components in `components/`** — shared
+
+Common gotchas
+
+streamlit: command not found → the venv isn't activated, or pip install failed. Re-activate (source .venv/bin/activate or the PowerShell equivalent) and re-run pip install -r requirements.txt.
+
+ModuleNotFoundError: No module named 'views' → you're running from the wrong directory. Make sure your terminal is inside dataquest_2026/, not its parent.
+
+Data file not found error in the app → the CSV isn't in data/loan_book.csv. Check the path exactly.
+
+
+Port already in use → another Streamlit process is running. Stop it with Ctrl+C in its terminal, or run streamlit run app.py --server.port 8502 to use a different port.
