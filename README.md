@@ -2,59 +2,88 @@
 
 Interactive credit-modelling tool built with Streamlit. Covers EDA, scorecard-style logistic regression with WoE/IV, and a business decision dashboard.
 
+## Model Results
+
+| Model | AUC |
+|---|---|
+| Given baseline (competition) | 0.68 |
+| **Our logistic regression** | **0.8064** |
+| Reference LightGBM ceiling | 0.82 |
+
+Our improved logistic regression closes **~92% of the gap** between the baseline and the LightGBM ceiling, using only feature engineering — no non-linear models.
+
+Key engineering wins:
+- Treating missing delinquency as a signal (`ever_delinquent` flag + fill with 999)
+- Log transforms on skewed income / loan / balance features
+- Risk threshold flags (high DTI, high utilisation ≥ 70%)
+- Interaction terms: DTI × utilisation, interest rate × DTI
+- Derived ratios: loan-to-income, delinquency rate per account
+
 ## Quick Start
 
 ```bash
+# 1. Create and activate virtual environment
+python3 -m venv .venv
+source .venv/bin/activate          # macOS / Linux
+# .venv\Scripts\activate           # Windows PowerShell
+
+# 2. Install dependencies
 pip install -r requirements.txt
+
+# 3. Run the app
 streamlit run app.py
 ```
 
 The app opens at `http://localhost:8501`.
 
-Run this command in vs code terminal before running the webapp
+**Important:** `loan_book.csv` must be in the project root (same folder as `app.py`). It is already there — do not move it.
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
+## App Structure
+
+Six tabs, covering every deliverable in the competition brief:
+
+| Tab | Contents |
+|---|---|
+| 📋 Data Quality | Missing values, categorical inconsistencies, date format issues, outliers |
+| 🔍 Univariate Explorer | Distribution by default, WoE chart, default-rate chart, IV leaderboard |
+| 🔗 Bivariate Explorer | Scatter / heatmap of any two features, full correlation matrix |
+| 🤖 Model Performance | ROC curve, top-20 feature coefficients, engineering decisions table |
+| 📚 Research | GLMs vs non-linear models, WoE/IV explanation, metrics guide, regulatory notes |
+| 💼 Business Dashboard | Approval threshold slider, volume vs risk curve, precision–recall curve |
+
+## Project Layout
+
 ```
-You'll know it worked when your terminal prompt is prefixed with (.venv).
-
-## Project Structure
-
-```
-dataquest_2026/
-├── app.py                  # entry point + navigation
+FNB-Data-Quest/
+├── app.py              # single entry point — all tabs live here
+├── fnb_app.py          # original working draft (kept for reference)
 ├── requirements.txt
-├── .streamlit/config.toml  # theme
-├── data/                   # loan_book.csv lives here
-├── views/                  # one file per page
-├── content/                # research markdown
-├── core/                   # analytics (Person A)
-├── components/             # reusable UI bits
-└── utils/                  # cached loaders
+├── loan_book.csv       # dataset (project root)
+├── .venv/              # local virtual environment
+├── .streamlit/         # theme config
+├── views/              # legacy multi-page shell (superseded by app.py)
+├── core/               # legacy analytics modules (superseded by app.py)
+├── content/            # research markdown (superseded by app.py)
+├── components/         # reusable UI bits
+└── utils/              # cached loaders
 ```
 
-## Adding Data
+## Common Gotchas
 
-Place `loan_book.csv` in the `data/` directory. The data loader caches it on first load.
+**`streamlit: command not found`** — the venv isn't activated. Re-run `source .venv/bin/activate` then try again.
 
-## Editing Research Content
+**`ModuleNotFoundError`** — run `pip install -r requirements.txt` inside the activated venv.
 
-Research lives in `content/*.md`. Edit the markdown directly; the Research page renders it on reload.
+**Data file not found** — `loan_book.csv` must be in the project root, not inside `data/`. The path is resolved relative to `app.py` at startup.
 
-## For Contributors
+**Port already in use** — another Streamlit process is running. Stop it with `Ctrl+C`, or run `streamlit run app.py --server.port 8502`.
 
-- **App shell / views / content** — owner: Person B
-- **EDA analytics, modelling, metrics in `core/`** — owner: Person A
-- **Reusable components in `components/`** — shared
+## Deliverables Checklist
 
-Common gotchas
-
-streamlit: command not found → the venv isn't activated, or pip install failed. Re-activate (source .venv/bin/activate or the PowerShell equivalent) and re-run pip install -r requirements.txt.
-
-ModuleNotFoundError: No module named 'views' → you're running from the wrong directory. Make sure your terminal is inside dataquest_2026/, not its parent.
-
-Data file not found error in the app → the CSV isn't in data/loan_book.csv. Check the path exactly.
-
-
-Port already in use → another Streamlit process is running. Stop it with Ctrl+C in its terminal, or run streamlit run app.py --server.port 8502 to use a different port.
+- [x] Interactive EDA tool (univariate + bivariate + data quality)
+- [x] WoE and IV for all numeric features
+- [x] Improved logistic regression (AUC 0.8064 vs 0.68 baseline)
+- [x] Research section (GLMs, WoE/IV, metrics, regulatory concerns)
+- [x] Business decision dashboard (threshold slider, volume/risk, precision/recall)
+- [x] Feature engineering justification table
+- [x] Reproducible single-command run

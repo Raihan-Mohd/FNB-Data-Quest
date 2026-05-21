@@ -1,7 +1,7 @@
 """Home / landing page."""
 import streamlit as st
 
-st.title("DataQuest 2026 — Interpretable Credit Models")
+st.title("DataQuest 2026 - Interpretable Credit Models")
 st.caption("Retail lending analytics, scorecard-style logistic regression, business decision support.")
 
 st.markdown(

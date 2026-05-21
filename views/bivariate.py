@@ -50,7 +50,7 @@ elif plot_type == "Box (by target)":
     st.plotly_chart(fig, use_container_width=True)
 
 elif plot_type == "Heatmap":
-    # Numeric correlation heatmap (ignores selected x/y for now — Person A can refine)
+    # Numeric correlation heatmap (ignores selected x/y for now - Person A can refine)
     numeric_cols = cols["numeric"]
     corr = df[numeric_cols].corr()
     fig = px.imshow(

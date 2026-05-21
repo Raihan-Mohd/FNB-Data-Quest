@@ -10,7 +10,7 @@ import pandas as pd
 import numpy as np
 
 
-# Shared theme tokens — keep visuals coherent across pages
+# Shared theme tokens - keep visuals coherent across pages
 COLOUR_PRIMARY = "#2563EB"
 COLOUR_GOOD = "#10B981"
 COLOUR_BAD = "#EF4444"
@@ -56,7 +56,7 @@ def woe_bar_chart(woe_table: pd.DataFrame, feature: str) -> go.Figure:
     )
     fig.add_hline(y=0, line_dash="dot", line_color=COLOUR_MUTED)
     fig.update_layout(
-        title=f"Weight of Evidence by bin — {feature}",
+        title=f"Weight of Evidence by bin - {feature}",
         xaxis_title="Bin",
         yaxis_title="WoE",
     )

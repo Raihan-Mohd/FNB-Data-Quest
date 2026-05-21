@@ -28,12 +28,12 @@ with c2:
 
 st.divider()
 
-# KPI strip — placeholders
+# KPI strip - placeholders
 k1, k2, k3, k4 = st.columns(4)
-k1.metric("Approval rate", "—")
-k2.metric("Approved default rate", "—")
-k3.metric("Expected loss / loan", "—")
-k4.metric("Volume change vs baseline", "—")
+k1.metric("Approval rate", "-")
+k2.metric("Approved default rate", "-")
+k3.metric("Expected loss / loan", "-")
+k4.metric("Volume change vs baseline", "-")
 
 st.divider()
 
@@ -45,7 +45,7 @@ with c1:
     st.empty()  # Person A: call core.metrics.approval_strategy_table and chart it
 
 with c2:
-    st.subheader("Precision vs Recall — business view")
+    st.subheader("Precision vs Recall - business view")
     st.write(
         "**Precision:** of customers we flagged as risky, how many really were? "
         "Affects how many profitable applicants we reject.\n\n"

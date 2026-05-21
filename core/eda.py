@@ -6,8 +6,8 @@ View modules call these and pass results to components/charts.py for rendering.
 
 Person B notes:
 - Each function should be pure (input df, output dataframe/dict).
-- Use @st.cache_data on expensive computations.
-- Don't render in this module — return data, render in views/.
+    - Use @st.cache_data on expensive computations.
+    - Don't render in this module - return data, render in views/.
 """
 from __future__ import annotations
 import pandas as pd

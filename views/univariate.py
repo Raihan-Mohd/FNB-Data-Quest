@@ -30,7 +30,7 @@ with right:
 
 st.divider()
 
-# WoE/IV placeholder — Person A will fill in compute_woe_iv in core/eda.py
+# WoE/IV placeholder - Person A will fill in compute_woe_iv in core/eda.py
 st.subheader("Weight of Evidence & Information Value")
 st.info(
     "WoE/IV computation lives in `core/eda.py::compute_woe_iv` and is currently a stub. "

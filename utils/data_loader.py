@@ -3,8 +3,7 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-DATA_DIR = Path(__file__).resolve().parent.parent / "data"
-LOAN_BOOK_PATH = DATA_DIR / "loan_book.csv"
+LOAN_BOOK_PATH = Path(__file__).resolve().parent.parent / "loan_book.csv"
 
 
 @st.cache_data(show_spinner="Loading loan book...")

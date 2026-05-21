@@ -11,11 +11,11 @@ st.info(
     icon="🚧",
 )
 
-# Headline KPIs — placeholders until models are wired in
+# Headline KPIs - placeholders until models are wired in
 render_kpi_row([
     {"label": "Baseline AUC", "value": "0.68", "help": "Project benchmark."},
-    {"label": "Improved AUC", "value": "—", "delta": None, "help": "Will populate once model is fit."},
-    {"label": "Gini", "value": "—"},
+    {"label": "Improved AUC", "value": "-", "delta": None, "help": "Will populate once model is fit."},
+    {"label": "Gini", "value": "-"},
     {"label": "LightGBM ceiling", "value": "0.82"},
 ])
 
