@@ -25,7 +25,6 @@ DATA_PATH = Path(__file__).parent / "loan_book.csv"
 # Page config 
 st.set_page_config(
     page_title="FNB DataQuest 2026",
-    page_icon="🏦",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -93,15 +92,15 @@ def card(label, value, sub="", colour=""):
 
 
 def insight(text):
-    st.markdown(f'<div class="insight-box">💡 {text}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="insight-box">{text}</div>', unsafe_allow_html=True)
 
 
 def warn(text):
-    st.markdown(f'<div class="warn-box">⚠️ {text}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="warn-box">{text}</div>', unsafe_allow_html=True)
 
 
 def danger(text):
-    st.markdown(f'<div class="danger-box">🚨 {text}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="danger-box">{text}</div>', unsafe_allow_html=True)
 
 
 # Data loading 
@@ -277,38 +276,38 @@ models = train_models(df)
 
 # Sidebar 
 with st.sidebar:
-    st.markdown("## 🏦 FNB DataQuest 2026")
+    st.markdown("## FNB DataQuest 2026")
     st.markdown("**Interpretable Credit Modelling**")
     st.markdown("---")
-    st.markdown(f"📊 **{len(df):,}** total applicants")
-    st.markdown(f"🎯 **{df['default_flag'].mean()*100:.1f}%** default rate")
-    st.markdown(f"🏋️ **{(df['set']=='train').sum():,}** training rows")
-    st.markdown(f"🧪 **{(df['set']=='test').sum():,}** test rows")
+    st.markdown(f"**{len(df):,}** total applicants")
+    st.markdown(f"**{df['default_flag'].mean()*100:.1f}%** default rate")
+    st.markdown(f"**{(df['set']=='train').sum():,}** training rows")
+    st.markdown(f"**{(df['set']=='test').sum():,}** test rows")
     st.markdown("---")
     st.markdown("### Model Performance")
-    st.markdown("📉 Baseline AUC: **0.68** *(given)*")
-    st.markdown(f"📈 Our AUC: **{models['impr_test_auc']:.4f}**")
+    st.markdown("Baseline AUC: **0.68** *(given)*")
+    st.markdown(f"Our AUC: **{models['impr_test_auc']:.4f}**")
     delta = models["impr_test_auc"] - 0.68
     pct = delta / (0.82 - 0.68) * 100
-    st.markdown(f"🚀 Improvement: **+{delta:.4f}** ({pct:.0f}% to ceiling)")
+    st.markdown(f"Improvement: **+{delta:.4f}** ({pct:.0f}% to ceiling)")
 
-# Header 
-st.markdown("# 🏦 FNB DataQuest 2026")
+# Header
+st.markdown("# FNB DataQuest 2026")
 st.markdown("### Interpretable Credit Modelling - Interactive Analysis Tool")
 
-# Tabs 
+# Tabs
 tabs = st.tabs([
-    "📋 Data Quality",
-    "🔍 Univariate Explorer",
-    "🔗 Bivariate Explorer",
-    "🤖 Model Performance",
-    "📚 Research",
-    "💼 Business Dashboard",
+    "Data Quality",
+    "Univariate Explorer",
+    "Bivariate Explorer",
+    "Model Performance",
+    "Research",
+    "Business Dashboard",
 ])
 
 # TAB 1 - DATA QUALITY
 with tabs[0]:
-    st.markdown("## 📋 Data Quality Report")
+    st.markdown("## Data Quality Report")
     st.markdown("*A thorough audit of all data issues found in the loan book.*")
 
     c1, c2, c3, c4 = st.columns(4)
@@ -318,12 +317,12 @@ with tabs[0]:
     with c4: card("Train / Test",  "70 / 30",        "84,683 train | 36,277 test", "green")
 
     st.markdown("---")
-    st.markdown("### 🚨 Missing Values")
+    st.markdown("### Missing Values")
 
     missing_data = {
         "Column": [
-            "months_since_last_delinquency", "annual_income",
-            "employment_length_years", "num_open_accounts",
+            "Months Since Last Delinquency", "Annual Income",
+            "Employment Length (Years)", "Number of Open Accounts",
         ],
         "Missing Count": [60380, 8691, 3724, 2437],
         "Missing %": [49.9, 7.2, 3.1, 2.0],
@@ -345,44 +344,44 @@ with tabs[0]:
     st.plotly_chart(fig_miss, use_container_width=True)
 
     danger(
-        "**months_since_last_delinquency** is 49.9% missing - but this is NOT random. "
+        "**Months Since Last Delinquency** is 49.9% missing - but this is NOT random. "
         "Applicants with NO delinquency history simply have no entry. "
         "Default rate is 8.0% when missing vs 22.9% when present - a strong signal."
     )
     st.dataframe(mdf, use_container_width=True, hide_index=True)
 
     st.markdown("---")
-    st.markdown("### 🧹 Categorical Inconsistencies Found")
+    st.markdown("### Categorical Inconsistencies Found")
 
     col1, col2 = st.columns(2)
     with col1:
-        st.markdown("**home_ownership** - raw variants before standardisation")
+        st.markdown("**Home Ownership** - raw variants before standardisation")
         raw_counts = raw_df["home_ownership"].value_counts().reset_index()
         raw_counts.columns = ["value", "count"]
         fig_ho = px.bar(
             raw_counts, x="value", y="count", color="count",
             color_continuous_scale=[FNB_TEAL, FNB_ORANGE],
-            title="Raw home_ownership values",
+            title="Raw Home Ownership Values",
         )
         fig_ho.update_layout(showlegend=False, xaxis_tickangle=-45, plot_bgcolor="white", paper_bgcolor="white")
         st.plotly_chart(fig_ho, use_container_width=True)
         insight("Normalised all variants to 4 clean categories: MORTGAGE, RENT, OWN, OTHER")
 
     with col2:
-        st.markdown("**loan_purpose** - raw variants before standardisation")
+        st.markdown("**Loan Purpose** - raw variants before standardisation")
         raw_purpose = raw_df["loan_purpose"].value_counts().reset_index()
         raw_purpose.columns = ["value", "count"]
         fig_lp = px.bar(
             raw_purpose, x="value", y="count", color="count",
             color_continuous_scale=[FNB_TEAL, FNB_ORANGE],
-            title="Raw loan_purpose values",
+            title="Raw Loan Purpose Values",
         )
         fig_lp.update_layout(showlegend=False, xaxis_tickangle=-45, plot_bgcolor="white", paper_bgcolor="white")
         st.plotly_chart(fig_lp, use_container_width=True)
-        insight("Lowercased, stripped, replaced spaces with underscores → 7 clean categories")
+        insight("Lowercased, stripped, replaced spaces with underscores — 7 clean categories")
 
     st.markdown("---")
-    st.markdown("### 🗓️ Mixed Date Formats - 3 Visually Distinct Formats")
+    st.markdown("### Mixed Date Formats - 3 Visually Distinct Formats")
     col1, col2, col3 = st.columns(3)
     with col1: card("YYYY-MM-DD",   "84,839", "70.1% of dates")
     with col2: card("Slash format", "24,002", "19.8% - MM/DD and DD/MM mixed", "orange")
@@ -395,11 +394,11 @@ with tabs[0]:
     )
 
     st.markdown("---")
-    st.markdown("### 📊 Outliers")
+    st.markdown("### Outliers")
     col1, col2 = st.columns(2)
     with col1:
         warn(
-            "**credit_utilisation_pct** has 26 rows above 100% - physically impossible. "
+            "**Credit Utilisation (%)** has 26 rows above 100% - physically impossible. "
             "Default rate for these rows is 34.6% vs 15.4% overall. Capped at 100."
         )
     with col2:
@@ -411,7 +410,7 @@ with tabs[0]:
 
 # TAB 2 - UNIVARIATE EXPLORER
 with tabs[1]:
-    st.markdown("## 🔍 Univariate Explorer")
+    st.markdown("## Univariate Explorer")
     st.markdown("*Select any feature to see its distribution, relationship to default, and WoE/IV analysis.*")
 
     NUMERIC_FEATURES = {
@@ -500,7 +499,7 @@ with tabs[1]:
     st.markdown(f"**Information Value (IV): `{iv:.4f}` - :{iv_col}[{iv_str}]**")
 
     st.markdown("---")
-    st.markdown("### 📊 IV Leaderboard - All Features")
+    st.markdown("### IV Leaderboard - All Features")
     iv_data = []
     for feat in NUMERIC_FEATURES.keys():
         if feat in train_df.columns:
@@ -526,7 +525,7 @@ with tabs[1]:
 
 # TAB 3 - BIVARIATE EXPLORER
 with tabs[2]:
-    st.markdown("## 🔗 Bivariate Explorer")
+    st.markdown("## Bivariate Explorer")
     st.markdown("*Explore relationships between two variables and how they jointly relate to default risk.*")
 
     PLOT_FEATURES = [
@@ -536,9 +535,12 @@ with tabs[2]:
         "delinquency_rate", "monthly_debt_burden",
     ]
 
+    def _col_label(name):
+        return NUMERIC_FEATURES.get(name, name.replace("_", " ").title())
+
     col1, col2, col3 = st.columns(3)
-    with col1: x_feat = st.selectbox("X axis:", PLOT_FEATURES, index=0)
-    with col2: y_feat = st.selectbox("Y axis:", PLOT_FEATURES, index=5)
+    with col1: x_feat = st.selectbox("X axis:", PLOT_FEATURES, index=0, format_func=_col_label)
+    with col2: y_feat = st.selectbox("Y axis:", PLOT_FEATURES, index=5, format_func=_col_label)
     with col3: chart_type = st.radio("Chart type:", ["Scatter", "Heatmap"], horizontal=True)
 
     sample = train_df.dropna(subset=[x_feat, y_feat]).sample(min(5000, len(train_df)), random_state=42)
@@ -548,8 +550,8 @@ with tabs[2]:
             sample, x=x_feat, y=y_feat,
             color="default_flag",
             color_discrete_map={0: FNB_TEAL, 1: RED},
-            labels={"default_flag": "Default", x_feat: x_feat, y_feat: y_feat},
-            opacity=0.4, title=f"{x_feat} vs {y_feat} - coloured by default",
+            labels={"default_flag": "Default Flag", x_feat: _col_label(x_feat), y_feat: _col_label(y_feat)},
+            opacity=0.4, title=f"{_col_label(x_feat)} vs {_col_label(y_feat)} - coloured by default",
         )
         fig_bi.update_layout(plot_bgcolor="white", paper_bgcolor="white")
     else:
@@ -560,7 +562,7 @@ with tabs[2]:
             pivot = sample2.groupby(["x_bin", "y_bin"])["default_flag"].mean().unstack()
             fig_bi = px.imshow(
                 pivot, color_continuous_scale=[GREEN, FNB_ORANGE, RED],
-                title=f"Default Rate Heatmap: {x_feat} vs {y_feat}",
+                title=f"Default Rate Heatmap: {_col_label(x_feat)} vs {_col_label(y_feat)}",
                 labels=dict(color="Default Rate"),
             )
         except Exception as e:
@@ -570,7 +572,7 @@ with tabs[2]:
     st.plotly_chart(fig_bi, use_container_width=True)
 
     st.markdown("---")
-    st.markdown("### 🌡️ Feature Correlation Matrix")
+    st.markdown("### Feature Correlation Matrix")
     corr_feats = [
         "interest_rate", "age", "annual_income", "dti_ratio",
         "credit_utilisation_capped", "num_delinquencies_2yr",
@@ -578,6 +580,8 @@ with tabs[2]:
         "num_hard_inquiries_6mo", "pct_accounts_current", "default_flag",
     ]
     corr_matrix = train_df[corr_feats].corr().round(2)
+    corr_matrix.columns = [_col_label(c) for c in corr_matrix.columns]
+    corr_matrix.index = [_col_label(c) for c in corr_matrix.index]
     fig_corr = px.imshow(
         corr_matrix, text_auto=True, aspect="auto",
         color_continuous_scale="RdBu_r", zmin=-1, zmax=1,
@@ -586,15 +590,15 @@ with tabs[2]:
     fig_corr.update_layout(height=500, plot_bgcolor="white", paper_bgcolor="white")
     st.plotly_chart(fig_corr, use_container_width=True)
     insight(
-        "Interest rate and delinquency variables show the highest positive correlation with default_flag. "
-        "Age and months_since_oldest_account show the strongest negative correlation - "
+        "Interest rate and delinquency variables show the highest positive correlation with Default Flag. "
+        "Age and Months Since Oldest Account show the strongest negative correlation — "
         "older, more established borrowers default less."
     )
 
 
 # TAB 4 - MODEL PERFORMANCE
 with tabs[3]:
-    st.markdown("## 🤖 Model Performance")
+    st.markdown("## Model Performance")
     st.markdown("*Baseline vs improved logistic regression - every engineering decision justified by EDA.*")
 
     c1, c2, c3, c4 = st.columns(4)
@@ -646,7 +650,7 @@ with tabs[3]:
     st.plotly_chart(fig_coef, use_container_width=True)
 
     insight(
-        "**ever_delinquent** and **months_since_last_delinquency_filled** are the two most powerful "
+        "**Ever Delinquent** and **Months Since Last Delinquency** are the two most powerful "
         "features - both derived by treating missing delinquency data as a meaningful signal rather than noise."
     )
 
@@ -669,9 +673,9 @@ with tabs[3]:
 
 # TAB 5 - RESEARCH
 with tabs[4]:
-    st.markdown("## 📚 Research Section")
+    st.markdown("## Research Section")
 
-    with st.expander("📖 GLMs vs Non-Linear Models - Why Logistic Regression for Banks?", expanded=True):
+    with st.expander("GLMs vs Non-Linear Models - Why Logistic Regression for Banks?", expanded=True):
         st.markdown(r"""
 A **Generalised Linear Model (GLM)** assumes the relationship between inputs and the outcome
 can be described through a linear function, transformed via a *link function*.
@@ -686,18 +690,18 @@ non-linear interactions automatically. They almost always achieve higher AUC.
 
 | Property | Logistic Regression | Non-Linear Models |
 |---|---|---|
-| Interpretability | ✅ Every coefficient explainable | ❌ Black box |
-| Regulatory compliance | ✅ Can explain each decision | ❌ Cannot justify individual rejections |
-| Scorecard conversion | ✅ Coefficients → points directly | ❌ Not straightforward |
-| Audit trail | ✅ Full transparency | ❌ Very difficult |
-| AUC performance | 🟡 Good (0.70-0.82) | ✅ Higher (0.82-0.90+) |
+| Interpretability | Yes — every coefficient explainable | No — black box |
+| Regulatory compliance | Yes — can explain each decision | No — cannot justify individual rejections |
+| Scorecard conversion | Yes — coefficients to points directly | No — not straightforward |
+| Audit trail | Yes — full transparency | No — very difficult |
+| AUC performance | Moderate (0.70-0.82) | Higher (0.82-0.90+) |
 
 Banks are legally required under frameworks like Basel III and IFRS 9 to be able to
 explain credit decisions to regulators and to applicants who are rejected.
 A model that says "the algorithm rejected you" is not legally acceptable.
         """)
 
-    with st.expander("📊 Weight of Evidence (WoE) and Information Value (IV)"):
+    with st.expander("Weight of Evidence (WoE) and Information Value (IV)"):
         st.markdown(r"""
 **Weight of Evidence (WoE)** is a technique from credit scoring that transforms each bin of a variable
 into a number representing its relative risk:
@@ -724,7 +728,7 @@ log-odds of default - which is exactly what logistic regression needs. It also h
 values and outliers gracefully by binning.
         """)
 
-    with st.expander("📈 Key Metrics - AUC, Gini, Precision, Recall, F1"):
+    with st.expander("Key Metrics - AUC, Gini, Precision, Recall, F1"):
         gini = 2 * models["impr_test_auc"] - 1
         st.markdown(f"""
 **AUC (Area Under the ROC Curve)** - The probability that a randomly chosen defaulter scores
@@ -746,30 +750,30 @@ Our model Gini = **{gini:.3f}** (vs 0.36 baseline).
 The business dashboard explores this trade-off interactively.
         """)
 
-    with st.expander("⚖️ Regulatory Considerations - Which Features Might Be Flagged?"):
+    with st.expander("Regulatory Considerations - Which Features Might Be Flagged?"):
         st.markdown("""
 Despite the dataset being simulated, certain features would attract regulatory scrutiny
 under real credit regulation (e.g. South Africa's National Credit Act, EU's ECOA equivalent):
 
-**🚨 age** - Using age directly as a predictor can constitute age discrimination.
+**Age** - Using age directly as a predictor can constitute age discrimination.
 Even though older applicants statistically default less (IV ≈ 0.25), a regulator may
 require this feature to be excluded or heavily justified.
 
-**🚨 region** - Geographic proxies can be proxies for race or socioeconomic class,
+**Region** - Geographic proxies can be proxies for race or socioeconomic class,
 which could constitute indirect discrimination (disparate impact).
 Our EDA showed default rates across regions are nearly identical (15.0%-16.0%),
 confirming region adds little predictive value - easy to drop.
 
-**🟡 email_domain_type** - Proxies for digital literacy and possibly socioeconomic status.
+**Email Domain Type** - Proxies for digital literacy and possibly socioeconomic status.
 Weak predictor (nearly no default rate difference) and potentially discriminatory.
 
-**✅ Features regulators generally accept:** income, DTI, employment length, delinquency history,
+**Features regulators generally accept:** income, DTI, employment length, delinquency history,
 credit utilisation - these are direct measures of creditworthiness with established precedent.
         """)
 
 # TAB 6 - BUSINESS DASHBOARD
 with tabs[5]:
-    st.markdown("## 💼 Business Decision Dashboard")
+    st.markdown("## Business Decision Dashboard")
     st.markdown("*Explore how different approval thresholds affect volume, risk, and profitability.*")
 
     probs = models["probs_test"]
@@ -799,7 +803,7 @@ with tabs[5]:
     with c4: card("Precision",         f"{precision_score:.1%}", "of approvals are good loans")
 
     st.markdown("---")
-    st.markdown("### 📉 Volume vs Risk Trade-Off Curve")
+    st.markdown("### Volume vs Risk Trade-Off Curve")
     thresholds = np.linspace(0.05, 0.95, 91)
     vol, risk, avoided = [], [], []
     for t in thresholds:
@@ -821,7 +825,7 @@ with tabs[5]:
     )
     st.plotly_chart(fig_vr, use_container_width=True)
 
-    st.markdown("### 🎯 Precision vs Recall")
+    st.markdown("### Precision vs Recall")
     prec_arr, rec_arr, _ = precision_recall_curve(actual, probs)
     fig_pr = go.Figure()
     fig_pr.add_trace(go.Scatter(
@@ -849,7 +853,7 @@ with tabs[5]:
         )
 
     st.markdown("---")
-    st.markdown("### 💡 Business Recommendation")
+    st.markdown("### Business Recommendation")
     st.markdown("""
 Based on our model analysis, we recommend a **threshold of 0.12–0.15** as a balanced starting point:
 

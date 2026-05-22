@@ -1,9 +1,3 @@
-"""
-Model evaluation metrics. Owner: Person A.
-
-Pure functions: given y_true and y_score (or y_pred), return metrics or curves.
-View modules consume these and render with components/charts.py.
-"""
 from __future__ import annotations
 import numpy as np
 import pandas as pd

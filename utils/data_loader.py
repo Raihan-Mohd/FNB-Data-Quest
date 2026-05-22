@@ -3,6 +3,61 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
+_DISPLAY_NAMES: dict[str, str] = {
+    "applicant_id_hash": "Applicant ID",
+    "age": "Age",
+    "annual_income": "Annual Income",
+    "employment_length_years": "Employment Length (Years)",
+    "home_ownership": "Home Ownership",
+    "region": "Region",
+    "num_open_accounts": "Number of Open Accounts",
+    "num_delinquencies_2yr": "Delinquencies (2 Years)",
+    "total_revolving_balance": "Total Revolving Balance",
+    "credit_utilisation_pct": "Credit Utilisation (%)",
+    "months_since_oldest_account": "Months Since Oldest Account",
+    "num_hard_inquiries_6mo": "Hard Inquiries (6 Months)",
+    "loan_amount": "Loan Amount",
+    "interest_rate": "Interest Rate",
+    "loan_purpose": "Loan Purpose",
+    "dti_ratio": "DTI Ratio",
+    "months_since_last_delinquency": "Months Since Last Delinquency",
+    "pct_accounts_current": "% Accounts Current",
+    "application_date": "Application Date",
+    "application_dow": "Application Day of Week",
+    "branch_code_id": "Branch Code",
+    "months_at_current_address": "Months at Current Address",
+    "email_domain_type": "Email Domain Type",
+    "phone_verified": "Phone Verified",
+    "default_flag": "Default Flag",
+    "set": "Set",
+    "credit_utilisation_capped": "Credit Utilisation (Capped)",
+    "ever_delinquent": "Ever Delinquent",
+    "months_since_last_delinquency_filled": "Months Since Last Delinquency",
+    "loan_to_income": "Loan to Income Ratio",
+    "income_per_account": "Income per Account",
+    "delinquency_rate": "Delinquency Rate",
+    "monthly_debt_burden": "Monthly Debt Burden",
+    "log_annual_income": "Annual Income (Log)",
+    "log_loan_amount": "Loan Amount (Log)",
+    "log_revolving": "Total Revolving Balance (Log)",
+    "log_income_per_acct": "Income per Account (Log)",
+    "high_inquiries": "High Inquiries Flag",
+    "high_utilisation": "High Utilisation Flag",
+    "high_dti": "High DTI Flag",
+    "many_delinquencies": "Many Delinquencies Flag",
+    "low_pct_current": "Low % Accounts Current Flag",
+    "new_credit_history": "New Credit History Flag",
+    "short_employment": "Short Employment Flag",
+    "dti_x_utilisation": "DTI x Utilisation",
+    "delinq_x_inquiries": "Delinquencies x Inquiries",
+    "interest_x_dti": "Interest Rate x DTI",
+}
+
+
+def col_label(name: str) -> str:
+    """Return a human-readable display name for a DataFrame column."""
+    return _DISPLAY_NAMES.get(name, name.replace("_", " ").title())
+
 LOAN_BOOK_PATH = Path(__file__).resolve().parent.parent / "loan_book.csv"
 
 
